@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>দুর্গাপূজার তারিখ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🪔%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff8ee;--card:#fff;--ink:#2c2c2a;--mut:#6b6a64;--line:#e6dccb;--red:#c8321e;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1a17;--card:#262320;--ink:#f1efe8;--mut:#b4b2a9;--line:#3a352f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1a17;--card:#262320;--ink:#f1efe8;--mut:#b4b2a9;--line:#3a352f;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans Bengali',system-ui,sans-serif}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+.top{background:var(--red);color:#fff;text-align:center;padding:26px 16px 22px}
+.top h1{margin:0;font-size:28px;font-weight:700}
+.top p{margin:6px 0 0;font-size:15px;opacity:.92}
+.bar{display:flex;height:8px}.bar i{flex:1}
+main{max-width:760px;margin:0 auto;padding:22px 16px 40px}
+.pick{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+.pick label{font-size:16px;font-weight:500}
+input{font:inherit;font-size:26px;font-weight:700;width:130px;text-align:center;padding:8px;border:2px solid var(--red);border-radius:12px;background:var(--card);color:var(--ink)}
+button{font:inherit;font-size:22px;width:46px;height:46px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button:hover{border-color:var(--red)}
+.err{color:#d03b3b;text-align:center;min-height:24px;margin:10px 0;font-size:15px}
+.days{display:grid;gap:10px}
+.day{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;background:var(--card);border:1px solid var(--line);border-left-width:10px}
+.day .n{font-size:15px;color:var(--mut);width:96px;flex:none}
+.day .n b{display:block;font-size:19px;color:var(--ink)}
+.day .d{font-size:22px;font-weight:700;flex:1}
+.day .w{font-size:14px;color:var(--mut);display:block;font-weight:400;margin-top:2px}
+.tag{font-size:12px;font-weight:500;color:#fff;background:#b02a14;border-radius:8px;padding:3px 9px;margin-left:8px;white-space:nowrap}
+.note{margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--card);border:1px dashed var(--red);font-size:15px;display:none}
+.all{margin-top:26px;text-align:center}
+.all a{color:var(--red);cursor:pointer;font-size:15px;text-decoration:underline}
+@media(max-width:480px){.day .n{width:78px}.day .d{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="top"><h1>দুর্গাপূজার তারিখ</h1><p>বছর লিখুন (২০২৭ – ২০৭০), পাঁচ দিনের তারিখ জানুন</p></div>
+<div class="bar"><i style="background:#d4537e"></i><i style="background:#e8602c"></i><i style="background:#7f5bd1"></i><i style="background:#16a06f"></i><i style="background:#2f7fd6"></i></div>
+<main>
+<div class="pick">
+<button id="prev" aria-label="আগের বছর">‹</button>
+<label for="yr" class="sr" style="position:absolute;left:-9999px">বছর</label>
+<input id="yr" type="text" inputmode="numeric" maxlength="4" value="2027" autocomplete="off">
+<button id="next" aria-label="পরের বছর">›</button>
+</div>
+<div class="err" id="err" role="alert"></div>
+<div class="days" id="days"></div>
+<div class="note" id="note"></div>
+<div class="all"><a id="toggle">সব বছরের তালিকা দেখুন</a><div id="list" style="display:none;margin-top:14px;text-align:left"></div></div>
+</main>
+<script>
+var RAW="2027:10.5.2.1,2028:9.24,2029:10.13,2030:10.3,2031:10.21,2032:9.10,2033:9.29,2034:10.18.3.1,2035:10.7.3.1,2036:9.25,2037:10.13,2038:10.3,2039:9.23,2040:10.10.3.0,2041:9.29,2042:10.18,2043:10.6.2.0,2044:9.26,2045:10.15,2046:10.5.2.0,2047:9.23,2048:10.12.2.1,2049:10.1.2.1,2050:10.22,2051:10.6,2052:9.26,2053:10.17,2054:10.5,2055:9.24,2056:10.12,2057:10.4,2058:9.23,2059:10.10.2.1,2060:9.29,2061:10.18,2062:10.6.2.1,2063:9.26,2064:10.15,2065:10.5.2.1,2066:9.23,2067:10.12.2.1,2068:10.1.2.1,2069:10.22,2070:10.6";
+var DATA={};RAW.split(',').forEach(function(s){var p=s.split(':'),a=p[1].split('.').map(Number);DATA[p[0]]={m:a[0],d:a[1],i:a[2]||-1,b:a[3]||0}});
+var NAMES=['মহাষষ্ঠী','মহা সপ্তমী','মহা অষ্টমী','মহা নবমী','বিজয়া দশমী'];
+var COL=['#d4537e','#e8602c','#7f5bd1','#16a06f','#2f7fd6'];
+var MON={9:'সেপ্টেম্বর',10:'অক্টোবর'};
+var WD=['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'];
+function bn(x){return String(x).replace(/\d/g,function(c){return '০১২৩৪৫৬৭৮৯'[c]})}
+function en(x){return x.replace(/[০-৯]/g,function(c){return '০১২৩৪৫৬৭৮৯'.indexOf(c)})}
+function fmt(dt){return bn(dt.getUTCDate())+' '+MON[dt.getUTCMonth()+1]}
+function calc(y){
+  var r=DATA[y],t=Date.UTC(y,r.m-1,r.d),out=[],off=0;
+  for(var k=0;k<5;k++){
+    var a=new Date(t+off*864e5),dbl=(k===r.i),b=dbl?new Date(t+(off+1)*864e5):null;
+    out.push({a:a,b:b});off+=dbl?2:1;
+  }
+  return out;
+}
+var yr=document.getElementById('yr'),err=document.getElementById('err'),days=document.getElementById('days'),note=document.getElementById('note');
+function render(y){
+  var res=calc(y),r=DATA[y];days.innerHTML='';
+  res.forEach(function(x,k){
+    var el=document.createElement('div');el.className='day';el.style.borderLeftColor=COL[k];
+    var d=x.b?bn(x.a.getUTCDate())+' ও '+fmt(x.b):fmt(x.a);
+    var w=x.b?WD[x.a.getUTCDay()]+' ও '+WD[x.b.getUTCDay()]:WD[x.a.getUTCDay()];
+    el.innerHTML='<div class="n"><b style="color:'+COL[k]+'">'+NAMES[k]+'</b></div><div class="d">'+d+(x.b?'<span class="tag">দ্বিরাত্র'+(r.b?'/বৃদ্ধি':'')+'</span>':'')+'<span class="w">'+w+'</span></div>';
+    days.appendChild(el);
+  });
+  if(r.i>=0){note.style.display='block';note.textContent=bn(y)+' সালে '+NAMES[r.i]+' দুই দিন ব্যাপী ('+(r.b?'দ্বিরাত্র/বৃদ্ধি':'দ্বিরাত্র')+'), তাই পূজা ছয় দিনের তারিখজুড়ে চলবে।'}
+  else note.style.display='none';
+}
+function go(v){
+  var y=parseInt(en(String(v).trim()),10);
+  if(isNaN(y)||!DATA[y]){err.textContent='২০২৭ থেকে ২০৭০ এর মধ্যে একটি বছর লিখুন';return}
+  err.textContent='';yr.value=bn(y);render(y);
+}
+yr.addEventListener('input',function(){var v=en(yr.value);if(v.length===4)go(v);else err.textContent=''});
+yr.addEventListener('keydown',function(e){if(e.key==='Enter')go(yr.value)});
+function step(n){var y=parseInt(en(yr.value),10);if(isNaN(y)||!DATA[y])y=2027;y+=n;if(y<2027)y=2070;if(y>2070)y=2027;go(y)}
+document.getElementById('prev').onclick=function(){step(-1)};
+document.getElementById('next').onclick=function(){step(1)};
+var list=document.getElementById('list'),built=false;
+document.getElementById('toggle').onclick=function(){
+  if(!built){built=true;var h='';for(var y=2027;y<=2070;y++){var c=calc(y);h+='<div style="padding:6px 0;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer" onclick="go('+y+');scrollTo(0,0)"><b>'+bn(y)+'</b> · '+fmt(c[0].a)+' থেকে '+fmt((c[4].b||c[4].a))+(DATA[y].i>=0?' <span style="color:#b02a14">(দ্বিরাত্র)</span>':'')+'</div>'}list.innerHTML=h}
+  list.style.display=list.style.display==='none'?'block':'none';
+};
+yr.value=bn(2027);go(2027);
+</script>
+</body>
+</html>
